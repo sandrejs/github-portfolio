@@ -1,0 +1,23 @@
+class WeatherStation:
+    def __init__(self, name: str):
+        self._name = name
+        self._observation_list = []
+
+    def add_observation(self, observation: str):
+        self._observation_list.append(observation)
+    
+    def latest_observation(self):
+        if len(self._observation_list) > 0:
+            return self._observation_list[-1]
+        else:
+            return self._name
+    
+    def number_of_observations(self):
+        return len(self._observation_list)
+
+    def __str__(self):
+        return f"{self._name}, {len(self._observation_list)} observations"
+
+if __name__ == "__main__":
+    a=WeatherStation("Kumpula")
+    m=a.latest_observation()
