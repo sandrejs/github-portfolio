@@ -1,0 +1,35 @@
+class BankAccount:
+    def __init__(self, name: str, account_number: str, balance: float):
+        self._name = name
+        self._account_number = account_number
+        self._balance = balance
+    
+    def deposit(self, amount: float):
+        self._balance += amount
+        self.__service_charge()
+    
+    def withdraw(self, amount: float):
+        self._balance -= amount
+        self.__service_charge()
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, amount):
+        if blance >= 0:
+            self._balance = balance
+        else:
+            raise ValueError("The amount must not be below zero")
+    
+    def __service_charge(self):
+        one_percent = self._balance / 100
+        self._balance -= one_percent
+
+if __name__ == "__main__":
+    account = BankAccount("Randy Riches", "12345-6789", 1000)
+    account.withdraw(100)
+    print(account.balance)
+    account.deposit(100)
+    print(account.balance)
