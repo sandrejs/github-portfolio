@@ -1,0 +1,31 @@
+# Code defines two classes: MagicPotion and SecretMagicPotion, which demonstrate inheritance and password protection for adding ingredients and printing the recipe.
+
+class Money:
+    def __init__(self, euros: float, cents: float):
+        self.euros = euros
+        self.cents = cents / 100
+        
+    def __str__(self):
+        amount = self.euros + self.cents
+        return f"{amount:.2f} eur"
+
+
+    def __eq__(self, another):
+        return self.euros == another.euros and self.cents == another.cents
+
+    def __lt__(self, another):
+        return self.euros < another.euros and (self.cents < another.cents or self.cents == another.cents)
+    
+    def __gt__(self, another):
+        return self.euros > another.euros and self.cents > another.cents 
+
+    def __ne__(self, another):
+        return self.euros != another.euros and self.cents != another.cents
+    
+if __name__ == "__main__":
+    e1 = Money(4, 10)
+    e2 = Money(2, 5)
+
+    print(e1 != e2)
+    print(e1 < e2)
+    print(e1 > e2)
