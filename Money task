@@ -1,0 +1,46 @@
+# Code defines a class called Money, which represents a monetary amount in euros and cents. 
+# The class includes various methods for handling operations such as addition, subtraction, comparison, and printing.
+
+class Money:
+    def __init__(self, euros: float, cents: float):
+        self._amount = euros + cents / 100
+
+    def __str__(self):
+        return f"{self._amount:.2f} eur"
+
+    def __eq__(self, other):
+        return self._amount == other._amount
+
+    def __lt__(self, other):
+        return self._amount < other._amount
+
+    def __gt__(self, other):
+        return self._amount > other._amount
+
+    def __ne__(self, other):
+        return self._amount != other._amount
+
+    def __add__(self, other):
+        return Money(0, self._amount + other._amount)
+
+    def __sub__(self, other):
+        result = self._amount - other._amount
+        if result >= 0:
+            return Money(0, result)
+        else:
+            raise ValueError("A negative result is not allowed")
+
+# Testing the methods 
+
+if __name__ == "__main__":
+    e1 = Money(1, 0)
+    e2 = Money(2, 0)
+
+    e3 = e1 + e2
+    e4 = e1 - e2
+
+    print(e3)  
+    print(e4)  
+
+    e5 = e2 - e1
+    print(e5) 
