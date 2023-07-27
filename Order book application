@@ -1,0 +1,142 @@
+# This code is a simple task management system implemented by using 'Tasks' class,
+# The 'add_order' method is used to add a new task to the list. It generates id of the task and takes name of the programmer, workload estimate and task description.
+# The 'list_unfinished_tasks' method prints all unfinished tasks with id, name and description
+# The 'list_finished_tasks' prints all finished tasks with id, name and description
+# The 'mark_as_finished' method moves task from unfinished tasks to finished
+# The 'list_programmers' method prints all the names of programmers
+# The 'status' method takes name input and prints the status of programmer - finished and unfinished tasks, as well as total hours spent
+# The main loop keeps running untill the user enters command '0'
+
+
+class Tasks:
+    def __init__(self):
+        self.unfinished_tasks = {}
+        self.finished_tasks = {}
+        self.programmers = []
+        self.id_counter = 1
+
+    def add_order(self, id: int, name: str, workload: str, description: str):
+
+        if id not in self.unfinished_tasks:
+            self.unfinished_tasks[id] = []
+        
+        if name not in self.programmers:
+            self.programmers.append(name)
+
+        self.unfinished_tasks[id].append(name)
+        self.unfinished_tasks[id].append(workload)
+        self.unfinished_tasks[id].append(description)
+        print("added!")
+        
+    def list_unfinished_tasks(self):
+        for id, tasks in self.unfinished_tasks.items():
+            name = tasks[0]
+            workload = tasks[1]
+            description = tasks[2]
+            print(f"{id}: {description} ({workload} hours), programmer {name} NOT FINISHED")
+
+    def list_finished_tasks(self):
+        if len(self.finished_tasks) > 0:
+            for id, tasks in self.finished_tasks.items():
+                name = tasks[0]
+                workload = tasks[1]
+                description = tasks[2]
+                print(f"{id}:{description} ({workload} hours), programmer {name} FINISHED")
+        else:
+            print("no finished tasks")
+
+    def mark_as_finished(self, id: int):
+        if id in self.unfinished_tasks:
+            self.finished_tasks[id] = self.unfinished_tasks[id]
+            del self.unfinished_tasks[id]
+            print("marked as finished")
+
+    def list_programmers(self):
+        for programmer in self.programmers:
+            print(programmer)
+
+    def status(self, name: str):
+        finished_count = 0
+        unfinished_count = 0
+        finished_hours = 0
+        unfinished_hours = 0
+
+        for tasks in self.finished_tasks.values():
+            if name in tasks:
+                finished_count += 1
+                finished_hours += tasks[1]
+
+        for tasks in self.unfinished_tasks.values():
+            if name in tasks:
+                unfinished_count += 1
+                unfinished_hours += tasks[1]
+
+        total_hours = finished_hours + unfinished_hours
+
+        print(f"tasks: finished {finished_count} not finished {unfinished_count}, hours: done {finished_hours} scheduled {unfinished_hours}")
+
+tasks = Tasks()
+
+print("commands:")
+print("0 exit")
+print("1 add order")
+print("2 list finished tasks")
+print("3 list unfinished tasks")
+print("4 mark task as finished")
+print("5 programmers")
+print("6 status of programmer")
+
+while True:
+    command = int(input("command: "))
+    if command == 0:
+        break
+
+    elif command == 1:
+        description = input("description: ")
+
+        name_and_workload = input("programmer and workload estimate: ").split()
+
+        if len(name_and_workload) != 2:
+            print("erroneous input")
+            continue
+
+        name, workload = name_and_workload
+
+        if not workload.isdigit():
+            print("erroneous input")
+            continue
+
+        workload = int(workload)
+
+        tasks.add_order(tasks.id_counter, name, workload, description)
+        tasks.id_counter += 1
+    
+    elif command == 2:
+        tasks.list_finished_tasks()
+
+    elif command == 3:
+        tasks.list_unfinished_tasks()
+    
+    elif command == 4:
+        try:
+            id = int(input("id: "))
+        except ValueError:
+            print("erroneous input")
+            continue
+
+        if id not in tasks.unfinished_tasks:
+            print("erroneous input")
+        
+        else:
+            tasks.mark_as_finished(id)
+
+    elif command == 5:
+        tasks.list_programmers()
+
+    elif command == 6:
+        name = input("programmer: ")
+
+        if name not in tasks.programmers:
+            print("erroneous input")
+        else:
+            tasks.status(name)
